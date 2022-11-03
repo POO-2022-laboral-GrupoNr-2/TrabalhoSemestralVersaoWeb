@@ -61,8 +61,10 @@ public class Controller extends HttpServlet {
 			} else {
 				cliente.setDataCheckin(request.getParameter("dataCheckin"));
 				cliente.setDataCheckout(request.getParameter("dataCheckout"));
-				cliente.setNrQuarto(24);
+				cliente.setNrQuarto(103);
+				
 				dao.salvarReserva(cliente);
+				dao.mudarStatus(cliente.getNrQuarto());
 			
 
 				System.out.println("reserva efectuada com sucesso salvo");

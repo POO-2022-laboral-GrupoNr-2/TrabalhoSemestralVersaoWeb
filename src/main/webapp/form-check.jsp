@@ -81,17 +81,17 @@
 
 					<div class="gender-group">
 						<div class="gender-input">
-							<input id="female" type="radio" name="gender"> <label
+							<input id="female" type="radio" name="Tipo"> <label
 								for="female">Casal</label>
 						</div>
 
 						<div class="gender-input">
-							<input id="male" type="radio" name="gender"> <label
+							<input id="male" type="radio" name="Tipo"> <label
 								for="male">Familia</label>
 						</div>
 
 						<div class="gender-input">
-							<input id="others" type="radio" name="gender"> <label
+							<input id="others" type="radio" name="Tipo"> <label
 								for="others">Solteiro</label>
 						</div>
 

@@ -77,7 +77,7 @@ public class DAO {
 	}
 
 	public void mudarStatus(int id) {
-		String sql = "update quartos set status='Reservado' where quartos_id = ?";
+		String sql = "update quartos set ESTADO ='Reservado' where ID = ?";
 		try {
 			Connection conexao = conectar();
 			PreparedStatement ps = conexao.prepareStatement(sql);
@@ -94,8 +94,9 @@ public class DAO {
 
 	}
 
-	public ArrayList<Quarto> resgatarQuarto() {
-		ArrayList<Quarto> quarto = null;
+	// metodo que retorna um arraylist de todos os quartos disponiveis do tipo solteiro
+	public ArrayList<Quarto> resgatarQuartoDisponiveisSolteiros() {
+		ArrayList<Quarto> quartos = null;
 		String sql = "select * from quartos";
 		Connection conexao = null;
 		PreparedStatement ps = null;
@@ -105,16 +106,21 @@ public class DAO {
 			ResultSet rs = ps.executeQuery();
 			if (rs != null) {
 
-				quarto = new ArrayList<>();
+				quartos = new ArrayList<>();
 				while (rs.next()) {
-					Quarto q = new Quarto();
-					q.setNumero(rs.getInt(1));
-					q.setTipo(rs.getString(2));
-					q.setDescricao(rs.getString(3));
-					q.setPreco(rs.getDouble(4));
-					q.setStatus(rs.getString(5));
+					if(rs.getString(3).equalsIgnoreCase("Disponivel") && rs.getString(5).equalsIgnoreCase("Solteiro") ) {
+						
+						Quarto q = new Quarto();
+						q.setNumero(rs.getInt(1));
+						q.setTipo(rs.getString(2));
+						q.setDescricao(rs.getString(3));
+						q.setPreco(rs.getDouble(4));
+						q.setStatus(rs.getString(5));
 
-					quarto.add(q);
+						quartos.add(q);
+						
+					}
+					
 
 				}
 				conexao.close();
@@ -125,19 +131,103 @@ public class DAO {
 
 		}
 
-		return quarto;
+		return quartos;
 	}
 
-	// metodo com base de dado real
-	// IDCELULARCHECKINCHECKOUTCONSUMOEMAILEndereçoGENERONACIONALIDADENOMENrBIQUARTOVALOR
+	
+	// metodo que retorna um arraylist de todos os quartos disponiveis do tipo solteiro	
+	public ArrayList<Quarto> resgatarQuartosDisponiveisCasal() {
+		ArrayList<Quarto> quartos = null;
+		String sql = "select * from quartos";
+		Connection conexao = null;
+		PreparedStatement ps = null;
+		try {
+			conexao = conectar();
+			ps = conexao.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs != null) {
+
+				quartos = new ArrayList<>();
+				while (rs.next()) {
+					if(rs.getString(3).equalsIgnoreCase("Disponivel") && rs.getString(5).equalsIgnoreCase("Casal") ) {
+						
+						Quarto q = new Quarto();
+						q.setNumero(rs.getInt(1));
+						q.setTipo(rs.getString(2));
+						q.setDescricao(rs.getString(3));
+						q.setPreco(rs.getDouble(4));
+						q.setStatus(rs.getString(5));
+
+						quartos.add(q);
+						
+					}
+					
+
+				}
+				conexao.close();
+			}
+		} catch (SQLException e) {
+
+			System.out.println("Erro ao Listar Quarto" + e);
+
+		}
+
+		return quartos;
+	}
+	
+	
+	// metodo que retorna um arraylist de todos os quartos disponiveis do tipo solteiro
+	public ArrayList<Quarto> resgatarQuartoDisponiveisFamilia() {
+		ArrayList<Quarto> quartos = null;
+		String sql = "select * from quartos";
+		Connection conexao = null;
+		PreparedStatement ps = null;
+		try {
+			conexao = conectar();
+			ps = conexao.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs != null) {
+
+				quartos = new ArrayList<>();
+				while (rs.next()) {
+					if(rs.getString(3).equalsIgnoreCase("Disponivel") && rs.getString(5).equalsIgnoreCase("Familia") ) {
+						
+						Quarto q = new Quarto();
+						q.setNumero(rs.getInt(1));
+						q.setTipo(rs.getString(2));
+						q.setDescricao(rs.getString(3));
+						q.setPreco(rs.getDouble(4));
+						q.setStatus(rs.getString(5));
+
+						quartos.add(q);
+						
+					}
+					
+
+				}
+				conexao.close();
+			}
+		} catch (SQLException e) {
+
+			System.out.println("Erro ao Listar Quarto" + e);
+
+		}
+
+		return quartos;
+	}
+	
+	
+	
+	// Metodo com base de dado real
+
 	public void salvarReserva(Cliente c) {
 
-		Connection conexao = null; // A conexao e a que nos permite obter a conexao com a base de dados
-		PreparedStatement ps = null; // O PreparedStatement permite com que possamos fazeer algumas manipulacoes nas
-										// tabelas da base de dados
+		Connection conexao = null; 
+		PreparedStatement ps = null; 
+									
 
-		String sql = "insert into reservas(CELULAR,CHECKIN,CHECKOUT,CONSUMO,EMAIL,GENERO,NACIONALIDADE,NOME,NrBI,QUARTO,VALOR)"
-				+ "value(?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into reservas(CELULAR,CHECKIN,CHECKOUT,CONSUMO,EMAIL,GENERO,NACIONALIDADE,NOME,NrBI,QUARTO,VALOR,ID)"
+				+ "value(?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			conexao = conectar();
@@ -153,7 +243,7 @@ public class DAO {
 			ps.setDouble(4, c.getConsumo());
 			ps.setDouble(11, c.getTotal());
 			ps.setString(3, c.getDataCheckout());
-			// ps.setInt(12, c.getId());
+			ps.setInt(12, c.getId());
 
 			ps.execute();
 			conexao.close();
@@ -188,6 +278,7 @@ public class DAO {
 
 	}
 
+	//Metodo que gera id aleatorio e unico
 	public int gerarId(ArrayList<Integer> ids) {
 		int id;
 		int aleatoro = (int) (1 + Math.random() * (100 - 1));
@@ -211,5 +302,7 @@ public class DAO {
 		}
 
 	}
+
+
 
 }
