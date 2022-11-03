@@ -54,8 +54,8 @@
 						<h1>Reservas</h1>
 					</div>
 					<div class="login-button">
-						<button onclick="submeterFormulario">
-							<a href="#">Entrar</a>
+						<button onclick="submeterFormulario()">
+							<a href="#">reservar</a>
 						</button>
 					</div>
 				</div>
@@ -108,8 +108,8 @@
 					</select>
 				</div>
 				<div class="continue-button">
-					<button onclick="submeterFormulario1()">
-						<a href="#">Continuar</a>
+					<button ">
+						<a href="pagamento.html">Continuar</a>
 					</button>
 				</div>
 			</form>
